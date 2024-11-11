@@ -13,6 +13,8 @@ class App(ctk.CTk):
 		super().__init__()
 		self.create_widgets()
 
+		#
+
 	def create_widgets(self):
 		self.fram_pesq_tag = ctk.CTkFrame(self)
 		self.fram_buttons = ctk.CTkFrame(self)
@@ -114,10 +116,10 @@ class App(ctk.CTk):
 			self.Console.set("Tente Novamente")
 
 	def Pesq_Url(self):
-		self.driver.get(self.Url.get())	
+		self.driver.get(self.Url.get())
 
 	def Pesq_XPATH(self):
-		#TODO PESQUISAR DENTRO 
+		#TODO PESQUISAR DENTRO
 
 		match self.Tag1.get():
 			case 'CLASS_NAMES':
