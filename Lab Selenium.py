@@ -6,277 +6,214 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from tkinter import messagebox
 from tkinter import *
+import customtkinter as ctk
 
-##vai no cmd como adm e escreve" pip install selenium" ai e so executar o progama ctrl + b
-def Mdr_Frame():
-	global Button_iframe_sair
-	global element
-	driver.switch_to.frame(element)
-	Button_iframe_sair = Button(fram_buttons,command=Sair_frame,text='Sair do Frame')
-	Button_iframe_sair.pack()
+class App(ctk.CTk):
+	def __init__(self):
+		super().__init__()
+		self.create_widgets()
 
-def Sair_frame():
-	global Button_iframe_sair
-	driver.switch_to.default_content()
-	Button_iframe_sair.destroy()
+	def create_widgets(self):
+		self.fram_pesq_tag = ctk.CTkFrame(self)
+		self.fram_buttons = ctk.CTkFrame(self)
+		self.frame_analise = ctk.CTkFrame(self)
 
-def Clicar():
-	global element
-	element.click()
+		self.fram_pesq_tag.pack(side=TOP,fill=X,padx=5,pady=(0,10))
+		self.frame_analise.pack(side=LEFT,fill=X,expand=1,padx=5,pady=(0,10))
+		self.fram_buttons.pack(side=RIGHT,fill=Y,padx=5,pady=(0,10))
 
-def Send_key():
-	global element
-	element.send_keys(Keys.PAGE_DOWN)
+		#VAR PY
+		self.option_menu_options = ["CLASS_NAME","XPATH","ID","NAME","CSS","CLASS_NAMES"]
+		Var_bool = BooleanVar()
 
-def Pegar_Atributo():
-	global element
-	Console_txt.insert(END,element.get_attribute(Atribute_pgr.get()))
-	if Console.get() == '':
-		Console.set("Tente Novamente")
+		#VAR TKINTER
 
-def Pesq_Url():
-	driver.get(Url.get())
-	
+		self.Tag1 = StringVar()
+		self.Name_tag = StringVar()
+		self.Atribute_pgr = StringVar()
+		self.Console = StringVar()
+		self.Key_to_send = StringVar()
+		self.Pesq_adentro = BooleanVar()
 
-def Pesq_XPATH():
-	global element
-	if Pesq_adentro.get() == True:
-		if Tag1.get() == 'CLASS_NAMES' :
-			try:
-				element = element.find_elements(By.CLASS_NAME, Name_tag.get())
-				Console.set(element)
+
+		self.Button_clicar = ctk.CTkButton(self.fram_buttons,text="Clicar",command=self.Clicar)
+		self.Button_Send_key = ctk.CTkButton(self.fram_buttons,text="Send key",command=self.Send_key)
+		self.Button_Pegar_at = ctk.CTkButton(self.fram_buttons,text='Pegar_Atributo',command=self.Pegar_Atributo)
+		self.Entry_Pegar_at = ctk.CTkEntry(self.fram_buttons,textvariable=self.Atribute_pgr)
+		self.Button_iframe = ctk.CTkButton(self.fram_buttons,command=self.Mdr_Frame,text='Mudar Pro Frame')
+		self.Button_Var = ctk.CTkButton(self.fram_buttons,command=self.Criar_Var,text='Criar Variable')
+
+
+		self.Name_Psq = ctk.CTkEntry(self.fram_pesq_tag,textvariable=self.Name_tag,width=400)
+		self.option_menu = ctk.CTkOptionMenu(self.fram_pesq_tag, variable=self.Tag1, values=self.option_menu_options,width=40)
+		self.Button_Pesq_tag = ctk.CTkButton(self.fram_pesq_tag,command=self.Pesq_XPATH,text="Pesquisar TAG")
+		self.Butoon_Pesq_adentr = ctk.CTkCheckBox(self.fram_pesq_tag, text="Pesquisar Dentro", variable=self.Pesq_adentro, onvalue=True, offvalue=False)
+
+		self.Console_entry_Label = ctk.CTkLabel(self.frame_analise,text='Console',anchor='w')
+		self.Console_entry = ctk.CTkEntry(self.frame_analise,state=DISABLED,textvariable=self.Console)
+		self.Console_txt_label = ctk.CTkLabel(self.frame_analise,text='Texto',anchor='w')
+		self.Console_txt = ctk.CTkTextbox(self.frame_analise)
+		self.send_key = ctk.CTkEntry(self.frame_analise,textvariable=self.Key_to_send)
+
+		# SINALIZANDO A OPÇÃO DEFAULT DO OPTIONMENU
+		self.option_menu.set("CSS")
+
+
+
+
+		#frame2
+		self.option_menu.pack(side=LEFT)
+		self.Name_Psq.pack(side=LEFT,fill=X,expand=True)
+		self.Button_Pesq_tag.pack(side=LEFT,padx=5)
+		self.Butoon_Pesq_adentr.pack(side=LEFT,)
+
+		#rest
+		self.Button_clicar.pack(fill='x',pady=5,padx=5,)
+		self.Button_Send_key.pack(fill='x',pady=5,padx=5)
+		self.Entry_Pegar_at.pack(fill='x',pady=2,padx=5)
+		self.Button_Pegar_at.pack(fill='x',pady=2,padx=5)
+		self.Button_iframe.pack(fill='x',pady=2,padx=5)
+		self.Button_Var.pack(fill='x',pady=2,padx=5)
+
+		self.Console_entry_Label.pack(fill='x')
+		self.Console_entry.pack(fill='x')
+		self.Console_txt_label.pack(fill='x')
+		self.Console_txt.pack(fill='x',expand=1)
+
+
+		self.driver = webdriver.Chrome()
+		self.driver.maximize_window()
+		self.driver.get('https://www.google.com/')
+
+
+		self.mainloop()
+
+		self.driver.quit()
+
+
+	##vai no cmd como adm e escreve" pip install selenium" ai e so executar o progama ctrl + b
+	def Mdr_Frame(self):
+		self.driver.switch_to.frame(self.element)
+		self.Button_iframe_sair = Button(self.fram_buttons,command=self.Sair_frame,text='Sair do Frame')
+		self.Button_iframe_sair.pack()
+
+	def Sair_frame(self):
+		if self.Button_iframe_sair:
+			self.driver.switch_to.default_content()
+			self.Button_iframe_sair.destroy()
+
+	def Clicar(self):
+		self.element.click()
+
+	def Send_key(self):
+		self.element.send_keys(Keys.PAGE_DOWN)
+
+	def Pegar_Atributo(self):
+		self.Console_txt.insert(END,self.element.get_attribute(self.Atribute_pgr.get()))
+		if self.Console.get() == '':
+			self.Console.set("Tente Novamente")
+
+	def Pesq_Url(self):
+		self.driver.get(self.Url.get())	
+
+	def Pesq_XPATH(self):
+		#TODO PESQUISAR DENTRO 
+
+		match self.Tag1.get():
+			case 'CLASS_NAMES':
 				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
+					self.element = self.driver.find_elements(By.CLASS_NAME, self.Name_tag.get())
+					self.Console.set(self.element)
+					try:
+						for i in self.element:
+							self.Console_txt.insert(END, i.text)
+					except:
+						pass
+				except:
+					self.Console.set("Não encontrou")
+					
+			case 'CLASS_NAME':
+				try:
+					self.element = self.driver.find_element(By.CLASS_NAME, self.Name_tag.get())
+					self.Console.set(self.element)
+					try:
+						self.Console_txt.insert(END, self.element.text)
+					except:
+						pass
+				except:
+					self.Console.set("Não encontrou")
+					
+			case 'XPATH':
+				try:
+					self.element = self.driver.find_element(By.XPATH, self.Name_tag.get())
+					self.Console.set(self.element)
+					try:
+						self.Console_txt.insert(END, self.element.text)
+					except:
+						pass
+				except:
+					self.Console.set("Não encontrou")
+					
+			case 'ID':
+				try:
+					self.element = self.driver.find_element(By.ID, self.Name_tag.get())
+					self.Console.set(self.element)
+					try:
+						self.Console_txt.insert(END, self.element.text)
+					except:
+						pass
+				except:
+					self.Console.set("Não encontrou")
+					
+			case 'NAME':
+				try:
+					self.element = self.driver.find_element(By.NAME, self.Name_tag.get())
+					self.Console.set(self.element)
+					try:
+						self.Console_txt.insert(END, self.element.text)
+					except:
+						pass
+				except:
+					self.Console.set("Não encontrou")
+					
+			case 'CSS':
+				try:
+					self.element = self.driver.find_element(By.CSS_SELECTOR, self.Name_tag.get())
+					self.Console.set(self.element)
+					try:
+						self.Console_txt.insert(END, self.element.text)
+					except:
+						pass
+				except:
+					self.Console.set("Não encontrou")
+					
+			case _:
+				messagebox.showwarning('Alerta', 'Selecione Tag')
 
-		if Tag1.get() == 'CLASS_NAME' :
-			try:
-				element = element.find_element(By.CLASS_NAME, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
+	def Var_dinamica(self):
+		self.Dado_var
 
-		elif Tag1.get() == 'XPATH':
-			try:
-				element = element.find_element(By.XPATH, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
-		
-		elif Tag1.get() == 'ID':
-			try:
-				element = element.find_element(By.ID, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
-		
-		elif Tag1.get() == 'NAME':
-			try:
-				element = element.find_element(By.NAME, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
+		while self.Var_bool.get() == True:
+			self.update()
+			self.Dado_var.set(self.driver.find_element(By.CLASS_NAME,self.Name_tag.get()).text)
 
-		elif Tag1.get() == 'CSS':
-			try:
-				element = driver.find_element(By.CSS_SELECTOR, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
+	def Criar_Var(self):
+		self.Dado_var
+		self.Dado_Entry
 
+		if self.Var_bool.get() == False:
+
+			Dado_var = StringVar()
+			Dado_var.set(self.element.text)
+
+			Dado_Entry = Entry(self.fram_buttons,textvariable=Dado_var,state=DISABLED)
+			Dado_Entry.pack(fill=X)
+			self.Var_bool.set(True)
+			self.Var_dinamica()
 		else:
-			messagebox.showwarning('Alerta','Selecione Tag')
-	else:
-		if Tag1.get() == 'CLASS_NAMES' :
-			try:
-				element = driver.find_elements(By.CLASS_NAME, Name_tag.get())
-				Console.set(element)
-				try:
-					for i in element:
-						Console_txt.insert(END,i.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
+			Dado_Entry.destroy()
+			self.Var_bool.set(False)
 
-		elif Tag1.get() == 'CLASS_NAME' :
-			try:
-				element = driver.find_element(By.CLASS_NAME, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
-
-		elif Tag1.get() == 'XPATH':
-			try:
-				element = driver.find_element(By.XPATH, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				Console.set("Não encontrou")
-		
-		elif Tag1.get() == 'ID':
-			try:
-				element = driver.find_element(By.ID, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				element = Console.set("Não encontrou")
-		
-		elif Tag1.get() == 'NAME':
-			try:
-				element = driver.find_element(By.NAME, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				element = Console.set("Não encontrou")
-
-		elif Tag1.get() == 'CSS':
-			try:
-				element = driver.find_element(By.CSS_SELECTOR, Name_tag.get())
-				Console.set(element)
-				try:
-					Console_txt.insert(END,element.text)
-				except :
-					pass
-			except:
-				element = Console.set("Não encontrou")
-		else:
-			messagebox.showwarning('Alerta','Selecione Tag')
-
-def Var_dinamica():
-	global element
-	global Dado_var
-
-	while Var_bool.get() == True:
-		Janela.update()
-		Dado_var.set(driver.find_element(By.CLASS_NAME,Name_tag.get()).text)
-
-def Criar_Var():
-	global element
-	global Dado_var
-	global Dado_Entry
-
-	if Var_bool.get() == False:
-
-		Dado_var = StringVar()
-		Dado_var.set(element.text)
-
-		Dado_Entry = Entry(fram_buttons,textvariable=Dado_var,state=DISABLED)
-		Dado_Entry.pack(fill=X)
-		Var_bool.set(True)
-		Var_dinamica()
-	else:
-		Dado_Entry.destroy()
-		Var_bool.set(False)
-
-
-Janela = Tk()
-Janela.config(bg='black')
-fram_pesq_tag = Frame(Janela,bg='black')
-fram_buttons = Frame(Janela,bg='black')
-Frame_analise = Frame(Janela,bg='black')
-
-fram_pesq_tag.pack(side=TOP,fill=X,padx=5,pady=(0,10))
-Frame_analise.pack(side=LEFT,padx=5,pady=(0,10))
-fram_buttons.pack(side=RIGHT,fill=Y,padx=5,pady=(0,10))
-
-#VAR PY
-option_menu = ["CLASS_NAME","XPATH","ID","NAME","CSS","CLASS_NAMES"]
-Var_bool = BooleanVar()
-
-#VAR TKINTER
-
-Tag1 = StringVar()
-Name_tag = StringVar()
-Atribute_pgr = StringVar()
-Console = StringVar()
-Key_to_send = StringVar()
-Pesq_adentro = BooleanVar()
-
-chrome_options = webdriver.ChromeOptions()
-driver = webdriver.Chrome()
-driver.maximize_window()
-driver.get('https://www.google.com/')
-
-Button_clicar = Button(fram_buttons,text="Clicar",command=Clicar,width=15,bg='#2D2D2D',fg='white',bd=2)
-Button_Send_key = Button(fram_buttons,text="Send key",command=Send_key,width=15,bg='#2D2D2D',fg='white',bd=2)
-Button_Pegar_at = Button(fram_buttons,text='Pegar_Atributo',command=Pegar_Atributo,width=15,bg='#2D2D2D',fg='white',bd=2)
-Entry_Pegar_at = Entry(fram_buttons,width=15,textvariable=Atribute_pgr,bg='#2D2D2D',fg='white',bd=2)
-Button_iframe = Button(fram_buttons,command=Mdr_Frame,text='Mudar Pro Frame',bg='#2D2D2D',fg='white',bd=2,width=15)
-Button_Var = Button(fram_buttons,command=Criar_Var,text='Criar Variable',bg='#2D2D2D',fg='white',bd=2,width=15)
-
-
-Name_Psq = Entry(fram_pesq_tag,textvariable= Name_tag)
-option_menu = OptionMenu(fram_pesq_tag,Tag1,*option_menu)
-Button_Pesq_tag = Button(fram_pesq_tag,command=Pesq_XPATH,text="Pesquisar TAG",bg='#2D2D2D',fg='white',bd=2)
-Butoon_Pesq_adentr = Checkbutton(fram_pesq_tag, text = "Pesquisar Dentro",variable = Pesq_adentro,onvalue = True, offvalue = False,bg='black',fg='white',bd=2,selectcolor='gray')
-
-Console_entry_Label = Label(Frame_analise,text='Console',bg='black',fg='white')
-Console_entry = Entry(Frame_analise,width=45,state=DISABLED,textvariable= Console)
-Console_txt_label = Label(Frame_analise,text='Texto',bg='black',fg='white')
-Console_txt = Text(Frame_analise,width=40,height=10)
-send_key = Entry(Frame_analise,width=45,textvariable=Key_to_send)
-
-
-
-
-#frame2
-option_menu.pack(side=LEFT)
-Name_Psq.pack(side=LEFT,fill=X,expand=True)
-Button_Pesq_tag.pack(side=LEFT,padx=5)
-Butoon_Pesq_adentr.pack(side=LEFT)
-
-#rest
-Button_clicar.pack(pady=10)
-Button_Send_key.pack(pady=10)
-Entry_Pegar_at.pack()
-Button_Pegar_at.pack(pady=(0,10))
-Button_iframe.pack()
-Button_Var.pack()
-
-Console_entry_Label.pack(anchor=W)
-Console_entry.pack(anchor=W)
-Console_txt_label.pack(anchor=W)
-Console_txt.pack(anchor=W)
-
-
-
-mainloop()
-
-driver.quit()
+if __name__ == "__main__":
+	App()
+	App.janela.mainloop()
