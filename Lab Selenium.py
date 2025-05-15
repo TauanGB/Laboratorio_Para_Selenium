@@ -5,8 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 import json
 import time
-from tkinter import messagebox
-from tkinter import *
+from tkinter import messagebox, Button, StringVar
 import customtkinter as ctk
 import sys
 import os
@@ -15,7 +14,7 @@ class App(ctk.CTk):
 	def __init__(self):
 		super().__init__()
 		self.create_widgets()
-		self.iconbitmap(self.resource_path("icon.ico"))
+		self.iconbitmap(self.resource_path("icons/icon.ico"))
 		self.protocol("WM_DELETE_WINDOW", self.on_close)
 		self.carregar_dados()
 
@@ -43,20 +42,20 @@ class App(ctk.CTk):
 		self.frame_analise = ctk.CTkFrame(self)
 		self.fram_sends = ctk.CTkFrame(self.fram_buttons)
 
-		self.fram_pesq_tag.pack(side=TOP,fill=X,padx=5,ipadx=5,ipady=5,pady=(5,10))
-		self.frame_analise.pack(side=LEFT,fill=BOTH,expand=1,padx=5,pady=(0,10))
-		self.fram_buttons.pack(side=RIGHT,fill=Y,padx=5,pady=(0,10))
+		self.fram_pesq_tag.pack(side=ctk.TOP,fill=ctk.X,padx=5,ipadx=5,ipady=5,pady=(5,10))
+		self.frame_analise.pack(side=ctk.LEFT,fill=ctk.BOTH,expand=1,padx=5,pady=(0,10))
+		self.fram_buttons.pack(side=ctk.RIGHT,fill=ctk.Y,padx=5,pady=(0,10))
 
 		#VAR PY
 		self.option_menu_Bts = ['ENTER','PG DOWN','LIMPAR',"TAB"]
 		self.option_menu_options = ["CLASS_NAME","XPATH","ID","NAME","CSS_SELECTOR","CLASS_NAMES"]
-		Var_bool = BooleanVar()
 
 		#VAR TKINTER
 
 		self.element = ''
 		self.Tag1 = StringVar()
 		self.Bt1 = StringVar()
+
 
 		self.label_frame = ctk.CTkLabel(self.fram_buttons,text='INTERAÇÕES',anchor='w')
 		self.label_send_bt = ctk.CTkLabel(self.fram_sends,text="Enviar Tecla",anchor='w')
@@ -82,7 +81,7 @@ class App(ctk.CTk):
 
 
 		self.Console_entry_Label = ctk.CTkLabel(self.frame_analise,text='Console',anchor='w')
-		self.Console_entry = ctk.CTkEntry(self.frame_analise, state=DISABLED)
+		self.Console_entry = ctk.CTkEntry(self.frame_analise, state=ctk.DISABLED)
 		self.Console_txt_label = ctk.CTkLabel(self.frame_analise,text='Texto',anchor='w')
 		self.Console_txt = ctk.CTkTextbox(self.frame_analise)
 		self.Historico_txt_label = ctk.CTkLabel(self.frame_analise,text='Historico',anchor='w')
@@ -93,20 +92,14 @@ class App(ctk.CTk):
 		self.option_menu.set("CSS_SELECTOR")
 		self.option_bts.set("ENTER")
 
-		#TODO BOTÃO CRIANDO ANTERIROMENTE 
-		'''self.Button_Var = ctk.CTkButton(self.fram_buttons,command=self.Criar_Var,text='Criar Variable')
-		self.Button_Var.pack(fill='x',pady=2,padx=5)'''
-
-
-
 		#frame2
-		self.option_menu.pack(side=LEFT)
-		self.Name_Psq.pack(side=LEFT,fill=X,expand=True)
-		self.Button_Pesq_tag.pack(side=LEFT,padx=5)
-		self.Button_iframe.pack(side=LEFT,padx=5)
-		self.Butoon_Pesq_adentr.pack(side=LEFT)
+		self.option_menu.pack(side=ctk.LEFT)
+		self.Name_Psq.pack(side=ctk.LEFT,fill=ctk.X,expand=True)
+		self.Button_Pesq_tag.pack(side=ctk.LEFT,padx=5)
+		self.Button_iframe.pack(side=ctk.LEFT,padx=5)
+		self.Butoon_Pesq_adentr.pack(side=ctk.LEFT)
 
-		self.label_frame.pack(side=TOP,fill=X,padx=5,pady=(5,0))
+		self.label_frame.pack(side=ctk.TOP,fill=ctk.X,padx=5,pady=(5,0))
 
 		self.label_send_bt.grid(row=0,column=0,columnspan=2,sticky='nsew',padx=2,pady=2)
 		self.option_bts.grid(row=1,column=0,sticky='nsew',padx=2,pady=2)
@@ -114,7 +107,7 @@ class App(ctk.CTk):
 		self.label_Send_texto.grid(row=2,column=0,columnspan=2,sticky='nsew',padx=2,pady=(10,1))
 		self.Entry_Send_texto.grid(row=3,column=0,sticky='nsew',padx=2,pady=(1,1))
 		self.Button_Send_texto.grid(row=3,column=1,sticky='nsew',padx=2,pady=(0,2))
-		self.fram_sends.pack(side=TOP,fill=Y,padx=5,pady=(0,10))
+		self.fram_sends.pack(side=ctk.TOP,fill=ctk.Y,padx=5,pady=(0,10))
 		
 
 		#rest
@@ -127,9 +120,9 @@ class App(ctk.CTk):
 		self.Console_entry_Label.pack(fill='x')
 		self.Console_entry.pack(fill='x')
 		self.Console_txt_label.pack(fill='x')
-		self.Console_txt.pack(fill=BOTH,expand=1)
+		self.Console_txt.pack(fill=ctk.BOTH,expand=1)
 		self.Historico_txt_label.pack(fill='x')
-		self.Historico_txt.pack(fill=BOTH,expand=1)
+		self.Historico_txt.pack(fill=ctk.BOTH,expand=1)
 
 
 		self.driver = webdriver.Chrome()
@@ -164,56 +157,56 @@ class App(ctk.CTk):
 
 	def Clicar(self):
 		self.element.click()
-		self.Historico_txt.insert(END,f"Elemento Clicado\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).click()\n")
+		self.Historico_txt.insert(ctk.END,f"Elemento Clicado\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).click()\n")
 
 	def Send_Text(self):
 		self.element.send_keys(self.Entry_Send_texto.get())
-		self.Historico_txt.insert(END,f"Texto Enviado\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys('{self.Entry_Send_texto.get()}')\n")
+		self.Historico_txt.insert(ctk.END,f"Texto Enviado\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys('{self.Entry_Send_texto.get()}')\n")
 
 	def Send_Key(self):
 		match self.option_bts.get():
 			case "ENTER" :
 				try:
 					self.element.send_keys(Keys.ENTER)
-					self.Historico_txt.insert(END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.ENTER)\n")
+					self.Historico_txt.insert(ctk.END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.ENTER)\n")
 				except AttributeError:
-					self.Historico_txt.insert(END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
 				except Exception as e:
-					self.Historico_txt.insert(END,f"Erro\n-Erro Desconhecido ocorrido")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-Erro Desconhecido ocorrido")
 
 
 			case "PG DOWN" :
 				try:
 					self.element.send_keys(Keys.PAGE_DOWN)
-					self.Historico_txt.insert(END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.PAGE_DOWN)\n")
+					self.Historico_txt.insert(ctk.END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.PAGE_DOWN)\n")
 				except AttributeError:
-					self.Historico_txt.insert(END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
 				except Exception as e:
-					self.Historico_txt.insert(END,f"Erro\n-Erro Desconhecido ocorrido")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-Erro Desconhecido ocorrido")
 				
 
 			case "LIMPAR" :
 				try:
 					self.element.send_keys(Keys.BACK_SPACE)
-					self.Historico_txt.insert(END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.BACK_SPACE)\n")
+					self.Historico_txt.insert(ctk.END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.BACK_SPACE)\n")
 				except AttributeError:
-					self.Historico_txt.insert(END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
 				except Exception as e:
-					self.Historico_txt.insert(END,f"Erro\n-Erro Desconhecido ocorrido")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-Erro Desconhecido ocorrido")
 
 			case "TAB" :
 				try:
 					self.element.send_keys(Keys.TAB)
-					self.Historico_txt.insert(END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.TAB)\n")
+					self.Historico_txt.insert(ctk.END,f"Tecla Enviada\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).send_keys(Keys.TAB)\n")
 				except AttributeError:
-					self.Historico_txt.insert(END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-O elemento selecionado nao pode receber teclas de forma direta")
 				except Exception as e:
-					self.Historico_txt.insert(END,f"Erro\n-Erro Desconhecido ocorrido")
+					self.Historico_txt.insert(ctk.END,f"Erro\n-Erro Desconhecido ocorrido")
 
 	def Pegar_Atributo(self):
 		if self.Entry_Pegar_at.get() != '':
-			self.Console_txt.insert(END,f"{self.element.get_attribute(self.Entry_Pegar_at.get())}\n")
-			self.Historico_txt.insert(END,f"Atributo retirado\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).get_attribute('{self.Entry_Pegar_at.get()}')\n")
+			self.Console_txt.insert(ctk.END,f"{self.element.get_attribute(self.Entry_Pegar_at.get())}\n")
+			self.Historico_txt.insert(ctk.END,f"Atributo retirado\n--self.driver.find_element(By.{self.Tag1.get()},{self.Name_Psq.get()}).get_attribute('{self.Entry_Pegar_at.get()}')\n")
 
 	def Pesq_Url(self):
 		self.driver.get(self.Url.get())
@@ -221,81 +214,81 @@ class App(ctk.CTk):
 	def Pesq_XPATH(self):
 		#TODO PESQUISAR DENTRO
 		self.Console_entry.configure(state='normal')
-		self.Console_txt.delete(0.0,END)
-		self.Console_entry.delete(0,END)
+		self.Console_txt.delete(0.0,ctk.END)
+		self.Console_entry.delete(0,ctk.END)
 
 		match self.Tag1.get():
 			case 'CLASS_NAMES':
 				try:
 					self.element = self.driver.find_elements(By.CLASS_NAME, self.Name_Psq.get())
-					self.Console_entry.insert(END,self.element)
+					self.Console_entry.insert(ctk.END,self.element)
 					try:
 						for i in self.element:
-							self.Console_txt.insert(END, f"{i.text}\n")
+							self.Console_txt.insert(ctk.END, f"{i.text}\n")
 					except:
 						pass
 				except:
-					self.Console_entry.insert(END,"Não encontrou")
+					self.Console_entry.insert(ctk.END,"Não encontrou")
 					
 			case 'CLASS_NAME':
 				try:
 					self.element = self.driver.find_element(By.CLASS_NAME, self.Name_Psq.get())
-					self.Console_entry.insert(END,self.element)
+					self.Console_entry.insert(ctk.END,self.element)
 					try:
-						self.Console_txt.insert(END, f"{self.element.text}\n")
+						self.Console_txt.insert(ctk.END, f"{self.element.text}\n")
 					except:
 						pass
 				except:
-					self.Console_entry.insert(END,"Não encontrou")
+					self.Console_entry.insert(ctk.END,"Não encontrou")
 					
 			case 'XPATH':
 				try:
 					self.element = self.driver.find_element(By.XPATH, self.Name_Psq.get())
-					self.Console_entry.insert(END,f"{self.element}\n")
+					self.Console_entry.insert(ctk.END,f"{self.element}\n")
 					try:
-						self.Console_txt.insert(END, f"{self.element.text}\n")
+						self.Console_txt.insert(ctk.END, f"{self.element.text}\n")
 					except:
 						pass
 				except:
-					self.Console_entry.insert(END,"Não encontrou")
+					self.Console_entry.insert(ctk.END,"Não encontrou")
 					
 			case 'ID':
 				try:
 					self.element = self.driver.find_element(By.ID, self.Name_Psq.get())
-					self.Console_entry.insert(END,f"{self.element}")
+					self.Console_entry.insert(ctk.END,f"{self.element}")
 					try:
-						self.Console_txt.insert(END, f"{self.element.text}\n")
+						self.Console_txt.insert(ctk.END, f"{self.element.text}\n")
 					except:
 						pass
 				except:
-					self.Console_entry.insert(END,"Não encontrou")
+					self.Console_entry.insert(ctk.END,"Não encontrou")
 					
 			case 'NAME':
 				try:
 					self.element = self.driver.find_element(By.NAME, self.Name_Psq.get())
-					self.Console_entry.insert(END,f"{self.element}")
+					self.Console_entry.insert(ctk.END,f"{self.element}")
 					try:
-						self.Console_txt.insert(END, f"{self.element.text}\n")
+						self.Console_txt.insert(ctk.END, f"{self.element.text}\n")
 					except:
 						pass
 				except:
-					self.Console_entry.insert(END,"Não encontrou")
+					self.Console_entry.insert(ctk.END,"Não encontrou")
 					
 			case 'CSS_SELECTOR':
 				try:
 					self.element = self.driver.find_element(By.CSS_SELECTOR, self.Name_Psq.get())
-					self.Console_entry.insert(END,f"{self.element}")
+					self.Console_entry.insert(ctk.END,f"{self.element}")
 					try:
-						self.Console_txt.insert(END, f"{self.element.text}\n")
+						self.Console_txt.insert(ctk.END, f"{self.element.text}\n")
 					except:
 						pass
 				except:
-					self.Console_entry.insert(END,"Não encontrou")
+					self.Console_entry.insert(ctk.END,"Não encontrou")
 					
 			case _:
 				messagebox.showwarning('Alerta', 'Selecione Tag')
 		
-		self.Console_entry.configure(state='disabled')
+		self.Console_entry.configure(state=ctk.DISABLED)
 
 
 if __name__ == "__main__":
