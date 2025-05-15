@@ -14,6 +14,10 @@ class App(ctk.CTk):
 	def __init__(self):
 		super().__init__()
 		self.create_widgets()
+		self.carregar_dados()
+		self.mainloop()
+		self.Salvar_dados()
+		self.driver.quit()
 
 		#
 
@@ -107,15 +111,6 @@ class App(ctk.CTk):
 
 		self.driver = webdriver.Chrome()
 		self.driver.maximize_window()
-
-		self.carregar_dados()
-
-		self.mainloop()
-
-		self.Salvar_dados()
-		
-		self.driver.quit()
-
 
 	def Salvar_dados(self):
 		with open("Banco.json", 'w') as arquivo:
@@ -257,4 +252,3 @@ class App(ctk.CTk):
 
 if __name__ == "__main__":
 	App()
-	App.janela.mainloop()
